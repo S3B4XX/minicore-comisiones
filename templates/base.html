@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}MiniCore · Comisiones{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <span class="logo">MiniCore</span>
+      <span class="sub">Cálculo de comisiones por vendedor</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="wrap footer">
+    Ingeniería Web · UDLA · {{ anio_actual }} — Flask · Patrón MVC
+  </footer>
+</body>
+</html>

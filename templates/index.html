@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="card">
+  <h1>Comisiones por rango de fechas</h1>
+  <p class="muted">Selecciona un período. Se suman las ventas de cada vendedor en ese rango y se aplica la regla de comisión que corresponde al total.</p>
+
+  <form method="get" action="{{ url_for('comisiones.index') }}" class="filtro">
+    <label>Fecha inicio
+      <input type="date" name="fecha_inicio" value="{{ fecha_inicio }}" required>
+    </label>
+    <label>Fecha fin
+      <input type="date" name="fecha_fin" value="{{ fecha_fin }}" required>
+    </label>
+    <button type="submit">Calcular</button>
+  </form>
+
+  {% if error %}<p class="alerta">{{ error }}</p>{% endif %}
+</section>
+
+{% if filas is not none %}
+<section class="card">
+  <h2>Resultado del {{ fecha_inicio }} al {{ fecha_fin }}</h2>
+
+  <div class="kpis">
+    <div><span>Total vendido</span><strong>${{ "%.2f"|format(totales.ventas) }}</strong></div>
+    <div><span>Total comisiones</span><strong class="destacado">${{ "%.2f"|format(totales.comisiones) }}</strong></div>
+  </div>
+
+  <div class="tabla-scroll">
+  <table>
+    <thead>
+      <tr>
+        <th>Vendedor</th>
+        <th class="num">Total ventas</th>
+        <th>Regla aplicada</th>
+        <th class="num">%</th>
+        <th class="num">Comisión</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for f in filas %}
+      <tr>
+        <td>
+          <details>
+            <summary>{{ f.vendedor }} <small>({{ f.ventas|length }} ventas)</small></summary>
+            {% if f.ventas %}
+            <ul class="detalle">
+              {% for v in f.ventas %}<li>{{ v.fecha }} — ${{ "%.2f"|format(v.monto) }}</li>{% endfor %}
+            </ul>
+            {% else %}<p class="muted">Sin ventas en el rango.</p>{% endif %}
+          </details>
+        </td>
+        <td class="num">${{ "%.2f"|format(f.total_ventas) }}</td>
+        <td>{{ f.regla }}</td>
+        <td class="num">{{ "%.0f"|format(f.porcentaje * 100) }}%</td>
+        <td class="num destacado">${{ "%.2f"|format(f.comision) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</section>
+{% endif %}
+
+<section class="card">
+  <h2>Reglas de comisión</h2>
+  <table class="reglas">
+    <thead><tr><th>Regla</th><th class="num">Ventas desde</th><th class="num">Comisión</th></tr></thead>
+    <tbody>
+      {% for r in reglas %}
+      <tr><td>{{ r.nombre }}</td><td class="num">${{ "%.2f"|format(r.monto_minimo) }}</td><td class="num">{{ "%.0f"|format(r.porcentaje * 100) }}%</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="muted">Si el total no llega al monto mínimo de la primera regla, no hay comisión.</p>
+</section>
+
+{% endblock %}
