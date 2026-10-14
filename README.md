@@ -2,8 +2,8 @@
 
 Tarea 4 – Ingeniería Web (UDLA). Réplica del ejercicio **MiniCore** de semestres pasados: calcular la comisión de cada vendedor según el total vendido en un **rango de fechas**.
 
-- **Deploy:** https://minicore-comisiones.onrender.com  ← (reemplazar con tu URL de Render)
-- **Video explicativo:** _(pegar enlace de YouTube/Drive)_
+- **Deploy:** https://minicore-comisiones.onrender.com  
+- **Video explicativo:**  https://youtu.be/UVXOWVTdLwU?si=eeUV4TVshPiloC8Z
 
 ## ¿Qué hace?
 
